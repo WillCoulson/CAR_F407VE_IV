@@ -23,7 +23,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "motor.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -46,7 +46,7 @@ TIM_HandleTypeDef htim5;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
-
+MOTOR_STATUS status = MOTOR_STOP;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -94,16 +94,19 @@ int main(void)
   MX_USB_OTG_FS_PCD_Init();
   MX_TIM5_Init();
   /* USER CODE BEGIN 2 */
-  HAL_GPIO_WritePin(GPIOE,GPIO_PIN_2,GPIO_PIN_SET);
-  HAL_GPIO_WritePin(GPIOE,GPIO_PIN_4,GPIO_PIN_RESET);
-  HAL_TIM_PWM_Start(&htim5,TIM_CHANNEL_1);
+//  HAL_GPIO_WritePin(GPIOE,GPIO_PIN_2,GPIO_PIN_SET);
+//  HAL_GPIO_WritePin(GPIOE,GPIO_PIN_4,GPIO_PIN_RESET);
+//  HAL_TIM_PWM_Start(&htim5,TIM_CHANNEL_1);
+  motor_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    __HAL_TIM_SET_COMPARE(&htim5,TIM_CHANNEL_1,70);
+//    __HAL_TIM_SET_COMPARE(&htim5,TIM_CHANNEL_1,70);
+    update_motors(&status);
+    
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
