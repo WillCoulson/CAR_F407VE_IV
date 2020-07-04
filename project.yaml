@@ -1,0 +1,30 @@
+common:
+  macros:
+  - USE_HAL_DRIVER
+  - STM32F407xx
+  includes:
+  - Drivers
+  - Drivers\CMSIS
+  - Drivers\CMSIS\Device
+  - Drivers\CMSIS\Device\ST
+  - Drivers\CMSIS\Device\ST\STM32F4xx
+  - Drivers\CMSIS\Device\ST\STM32F4xx\Include
+  - Drivers\CMSIS\Include
+  - Drivers\STM32F4xx_HAL_Driver
+  - Drivers\STM32F4xx_HAL_Driver\Inc
+  - Drivers\STM32F4xx_HAL_Driver\Inc\Legacy
+  - Inc
+  sources:
+    Drivers:
+    - Drivers\STM32F4xx_HAL_Driver\Src
+    Src:
+    - Src
+  target:
+  - stm32f407ve
+tool_specific:
+  iar_arm:
+    sources:
+      StartUp:
+      - IDE\IAR
+    linker_file:
+    - IDE\IAR\stm32f407xx_flash.icf
