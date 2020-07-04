@@ -36,6 +36,9 @@ static void go_front();
 static void go_right();
 static void go_left();
 static void go_back();
+static void go_cw();
+static void go_ucw();
+
 static void stop();
 static void spin(stm32_motor *motor, uint16_t speed, int8_t inv);
 
@@ -67,6 +70,16 @@ void update_motors(MOTOR_STATUS *status)
 		case GO_LEFT:
 		{
 			go_left();
+			break;
+		}
+                case GO_CW:
+		{
+			go_cw();
+			break;
+		}
+                case GO_UCW:
+		{
+			go_ucw();
 			break;
 		}
 		default: break;
@@ -169,3 +182,17 @@ static void stop()
     spin(&motor_4,0,0);
 }	
 
+static void go_cw()
+{
+    spin(&motor_1,speed_1,0);
+    spin(&motor_2,speed_2,1);
+    spin(&motor_3,speed_3,1);
+    spin(&motor_4,speed_4,0);
+}
+static void go_ucw()
+{
+    spin(&motor_1,speed_1,1);
+    spin(&motor_2,speed_2,0);
+    spin(&motor_3,speed_3,0);
+    spin(&motor_4,speed_4,1);
+}

@@ -46,7 +46,7 @@ TIM_HandleTypeDef htim5;
 PCD_HandleTypeDef hpcd_USB_OTG_FS;
 
 /* USER CODE BEGIN PV */
-MOTOR_STATUS status = MOTOR_STOP;
+MOTOR_STATUS status = GO_UCW;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/

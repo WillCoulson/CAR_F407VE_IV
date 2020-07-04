@@ -17,7 +17,9 @@ typedef enum{
   GO_FRONT, 
   GO_BACK,
   GO_RIGHT,
-  GO_LEFT
+  GO_LEFT,
+  GO_CW,
+  GO_UCW
 }MOTOR_STATUS;
 
 void motor_init();
