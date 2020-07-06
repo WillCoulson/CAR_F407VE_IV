@@ -25,6 +25,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "motor.h"
+#include "MY_NRF24.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,6 +49,8 @@ TIM_HandleTypeDef htim5;
 
 /* USER CODE BEGIN PV */
 MOTOR_STATUS status = GO_UCW;
+uint64_t TxpipeAddrs= 0x112344AA;
+char myTxData[32]="Hello world!";
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -100,6 +103,20 @@ int main(void)
 //  HAL_GPIO_WritePin(GPIOE,GPIO_PIN_4,GPIO_PIN_RESET);
 //  HAL_TIM_PWM_Start(&htim5,TIM_CHANNEL_1);
   motor_init();
+  
+  /* nRF24L01 config */
+  HAL_Delay(5000);
+  HAL_Delay(5000);
+  HAL_Delay(5000);
+  NRF24_begin(GPIOB,GPIO_PIN_7,GPIO_PIN_6,hspi1);
+  printRadioSettings();
+  
+  // Transmit - NO ACK
+  NRF24_stopListening();
+  NRF24_openWritingPipe(TxpipeAddrs);
+  NRF24_setAutoAck(false);
+  NRF24_setChannel(52);
+  NRF24_setPayloadSize(32);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -107,11 +124,18 @@ int main(void)
   while (1)
   {
 //    __HAL_TIM_SET_COMPARE(&htim5,TIM_CHANNEL_1,70);
-    update_motors(&status);
+//    update_motors(&status);
+    if(NRF24_write(myTxData, 32))
+    {
+          char TxBuf[100];
+          sprintf(TxBuf, "Send Success!\r\n");
+          VCPSend((uint8_t *)TxBuf, strlen(TxBuf));
+    }
     
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }

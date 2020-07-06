@@ -458,7 +458,12 @@ static uint8_t USBD_CDC_Init(USBD_HandleTypeDef *pdev, uint8_t cfgidx)
   UNUSED(cfgidx);
   USBD_CDC_HandleTypeDef *hcdc;
 
+#if defined ( __ICCARM__ ) || defined(__GNUC__) || defined   (__CC_ARM)/* IAR Compiler or GCC Compiler or ARMCC Compiler*/
+  static uint32_t buff[sizeof (USBD_CDC_HandleTypeDef)];
+  hcdc = (USBD_CDC_HandleTypeDef*) buff;
+#else
   hcdc = USBD_malloc(sizeof(USBD_CDC_HandleTypeDef));
+#endif
 
   if (hcdc == NULL)
   {
