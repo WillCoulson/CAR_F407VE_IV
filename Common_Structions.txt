@@ -1,3 +1,5 @@
 progen init -p stm32f407ve -tar stm32f407ve
 
 progen generate -f projects.yaml -p stm32f407ve -t iar_arm
+
+git submodule add https://gitee.com/huang_guosheng/mavlink.git Libraries/mavlink

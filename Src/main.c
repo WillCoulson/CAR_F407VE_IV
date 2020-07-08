@@ -51,6 +51,7 @@ TIM_HandleTypeDef htim5;
 MOTOR_STATUS status = GO_UCW;
 uint64_t TxpipeAddrs= 0x112344AA;
 char myTxData[32]="Hello world!";
+char AckPayload[32];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -107,31 +108,36 @@ int main(void)
   /* nRF24L01 config */
   HAL_Delay(5000);
   HAL_Delay(5000);
-  HAL_Delay(5000);
   NRF24_begin(GPIOB,GPIO_PIN_7,GPIO_PIN_6,hspi1);
   printRadioSettings();
   
-  // Transmit - NO ACK
+  // Transmit - width ACK
   NRF24_stopListening();
   NRF24_openWritingPipe(TxpipeAddrs);
-  NRF24_setAutoAck(false);
+  NRF24_setAutoAck(true);
   NRF24_setChannel(52);
   NRF24_setPayloadSize(32);
+  NRF24_enableDynamicPayloads();
+  NRF24_enableAckPayload();
+  motor_init();
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-//    __HAL_TIM_SET_COMPARE(&htim5,TIM_CHANNEL_1,70);
-//    update_motors(&status);
     if(NRF24_write(myTxData, 32))
     {
-          char TxBuf[100];
-          sprintf(TxBuf, "Send Success!\r\n");
-          VCPSend((uint8_t *)TxBuf, strlen(TxBuf));
+      NRF24_read(AckPayload, 32);
+      char TxBuf[100];
+      sprintf(TxBuf, "Send Success!\r\n");
+      VCPSend((uint8_t *)TxBuf, strlen(TxBuf));
+      sprintf(TxBuf, "Ack: %s\r\n", AckPayload);
+      VCPSend((uint8_t *)TxBuf, strlen(TxBuf));
     }
+      
     
+    update_motors(&status);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
