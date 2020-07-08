@@ -102,10 +102,10 @@ void motor_init()
 	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_2,GPIO_PIN_SET);
 	HAL_GPIO_WritePin(GPIOC,GPIO_PIN_3,GPIO_PIN_SET);
 	
-	speed_1 = 70;
-	speed_2 = 70;
-	speed_3 = 70;
-	speed_4 = 70;
+	speed_1 = 62;
+	speed_2 = 62;
+	speed_3 = 62;
+	speed_4 = 62;
 }
 
 

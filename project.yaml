@@ -23,6 +23,9 @@ common:
   - Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Inc
   - Middlewares/ST/STM32_USB_Device_Library/Core
   - Middlewares/ST/STM32_USB_Device_Library/Core/Inc
+  - Libraries
+  - Libraries/mavlink
+  - Libraries/mavlink/car
   - Inc
   sources:
     Drivers:

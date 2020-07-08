@@ -21,11 +21,12 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "usb_device.h"
-
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "motor.h"
 #include "MY_NRF24.h"
+#include "nrf24_mavlink.h"
+
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -50,8 +51,10 @@ TIM_HandleTypeDef htim5;
 /* USER CODE BEGIN PV */
 MOTOR_STATUS status = GO_UCW;
 uint64_t TxpipeAddrs= 0x112344AA;
-char myTxData[32]="Hello world!";
-char AckPayload[32];
+//char myTxData[32]="Hello world!";
+//char AckPayload[32];
+char CAR[]="CAR Activated!!!\r\n";
+
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -110,6 +113,7 @@ int main(void)
   HAL_Delay(5000);
   NRF24_begin(GPIOB,GPIO_PIN_7,GPIO_PIN_6,hspi1);
   printRadioSettings();
+  VCPSend((uint8_t *)CAR, strlen(CAR));
   
   // Transmit - width ACK
   NRF24_stopListening();
@@ -126,16 +130,16 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    if(NRF24_write(myTxData, 32))
-    {
-      NRF24_read(AckPayload, 32);
-      char TxBuf[100];
-      sprintf(TxBuf, "Send Success!\r\n");
-      VCPSend((uint8_t *)TxBuf, strlen(TxBuf));
-      sprintf(TxBuf, "Ack: %s\r\n", AckPayload);
-      VCPSend((uint8_t *)TxBuf, strlen(TxBuf));
-    }
-      
+//    if(NRF24_write(myTxData, 32))
+//    {
+//      NRF24_read(AckPayload, 32);
+//      char TxBuf[100];
+//      sprintf(TxBuf, "Send Success!\r\n");
+//      VCPSend((uint8_t *)TxBuf, strlen(TxBuf));
+//      sprintf(TxBuf, "Ack: %s\r\n", AckPayload);
+//      VCPSend((uint8_t *)TxBuf, strlen(TxBuf));
+//    }
+  update_mavlink();
     
     update_motors(&status);
     /* USER CODE END WHILE */
